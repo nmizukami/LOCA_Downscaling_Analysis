@@ -1,0 +1,38 @@
+Generally, just reminders I used when setting everything up.  Includes basic commands and also how I set up the env.  Just to have as reference.
+
+commands:
+
+du -sh
+ls -a --> displays all dot files
+git push origin (update my fork, not joes)
+
+
+set up env:
+
+1. folked this: 
+https://github.com/jhamma/portable-environment-public.git
+
+2. cloned:
+git clone https://github.com/julievano/portable-environment-public.git p
+
+3. went to setup file
+p/setup/
+
+4. ran setup file
+bash setup
+
+5. when running script it asks for: 
+Please Input the current SITE [main]
+
+I entered:
+/glade/u/home/jvano/ (but it appears that Joe entered ucar)
+
+though expect isn't right.  maybe just a return?
+
+
+
+
+
+locations of interest:
+/glade/u/home/jhamman/projects/loca
+data_catalog.py is where paths to data and read in commands located
