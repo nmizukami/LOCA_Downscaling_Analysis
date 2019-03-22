@@ -102,3 +102,4 @@ ENV/
 
 # dask
 dask-worker-space
+dask-worker*
