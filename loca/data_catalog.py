@@ -105,6 +105,7 @@ def load_monthly_historical_hydro_datasets(models=None,
     return out
 
 
+#JAV
 def load_monthly_obs_hydro_datasets(models=None,
                                            variables=DEFAULT_MON_HYDRO_VARS,
                                            resolution=DEFAULT_RESOLUTION,
@@ -150,6 +151,18 @@ def load_monthly_historical_met_datasets(resolution=DEFAULT_RESOLUTION,
     data = load_monthly_cmip_met_datasets('historical', models=models,
                                           resolution=resolution,
                                           **kwargs)
+
+    data['livneh'] = load_monthly_livneh_meteorology(resolution=resolution,
+                                                     **kwargs)
+    data['maurer'] = load_monthly_maurer_meteorology(resolution=resolution,
+                                                     **kwargs)
+
+    return data
+
+#JAV
+def load_monthly_obs_met_datasets(resolution=DEFAULT_RESOLUTION,
+                                         models=None, **kwargs):
+    print('load_monthly_historical_met_datasets', flush=True)
 
     data['livneh'] = load_monthly_livneh_meteorology(resolution=resolution,
                                                      **kwargs)
