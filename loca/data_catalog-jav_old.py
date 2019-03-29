@@ -18,7 +18,7 @@ BCSD_MET_MON_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/BCSD_mon_forc_nc'
 BCSD_VIC_MON_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/BCSD_mon_VIC_nc'
 
 # Maurer
-MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met_full/'
+MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met/'
 MAURER_VIC_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/historical_mon_VIC'
 
 # Livneh
@@ -105,6 +105,26 @@ def load_monthly_historical_hydro_datasets(models=None,
     return out
 
 
+#JAV
+def load_monthly_obs_hydro_datasets(models=None,
+                                           variables=DEFAULT_MON_HYDRO_VARS,
+                                           resolution=DEFAULT_RESOLUTION,
+                                           **kwargs):
+    print('load_monthly_obs_hydro_datasets', flush=True)
+
+
+    data['livneh'] = load_monthly_livneh_hydrology(resolution=resolution,
+                                                   **kwargs)
+    data['maurer'] = load_monthly_maurer_hydrology(resolution=resolution,
+                                                   **kwargs)
+
+    # TODO: it would be better if we passed this info to the individual loaders
+    out = {}
+    for k, ds in data.items():
+        out[k] = ds[variables]
+    return out
+
+
 def load_daily_historical_hydro_datasets(models=None,
                                          variables=DEFAULT_DAY_HYDRO_VARS,
                                          resolution=DEFAULT_RESOLUTION,
@@ -131,6 +151,18 @@ def load_monthly_historical_met_datasets(resolution=DEFAULT_RESOLUTION,
     data = load_monthly_cmip_met_datasets('historical', models=models,
                                           resolution=resolution,
                                           **kwargs)
+
+    data['livneh'] = load_monthly_livneh_meteorology(resolution=resolution,
+                                                     **kwargs)
+    data['maurer'] = load_monthly_maurer_meteorology(resolution=resolution,
+                                                     **kwargs)
+
+    return data
+
+#JAV
+def load_monthly_obs_met_datasets(resolution=DEFAULT_RESOLUTION,
+                                         models=None, **kwargs):
+    print('load_monthly_historical_met_datasets', flush=True)
 
     data['livneh'] = load_monthly_livneh_meteorology(resolution=resolution,
                                                      **kwargs)
@@ -389,10 +421,6 @@ def load_bcsd_dataset(root, scen='rcp85', models=None,
             print('skipping %s' % m)
 
     ds = xr.concat(ds_list, dim=xr.Variable('gcm', models_list))
-    
-    for var in ['bounds_latitude', 'bounds_longitude']:
-        if var in ds:
-            ds = ds.drop(var)
 
     return ds
 
@@ -403,9 +431,7 @@ def load_daily_bcsd_meteorology(scen='rcp85', models=None,
 
     ds = load_bcsd_dataset(BCSD_MET_ROOT_DIR, scen=scen, models=models,
                            resolution=resolution, **kwargs)
-    return ds.rename({'latitude': 'lat', 'longitude': 'lon',
-                      'pr': 'pcp', 'tasmin': 't_min',
-                      'tasmax': 't_max', 'tas': 't_mean'})
+    return ds
 
 
 def load_monthly_bcsd_meteorology(scen='rcp85', models=None,
@@ -414,7 +440,6 @@ def load_monthly_bcsd_meteorology(scen='rcp85', models=None,
 
     ds = load_bcsd_dataset(BCSD_MET_MON_ROOT_DIR, scen=scen, models=models,
                            resolution=resolution, **kwargs)
-    ds = ds.resample(time='MS').first(skipna=False)
 
     return ds.rename({'latitude': 'lat', 'longitude': 'lon',
                       'pr': 'pcp', 'tasmin': 't_min',
@@ -437,7 +462,6 @@ def load_monthly_bcsd_hydrology(scen='rcp85', models=None,
 
     ds = load_bcsd_dataset(BCSD_VIC_MON_ROOT_DIR, scen=scen, models=models,
                            resolution=resolution, **kwargs)
-    ds = ds.resample(time='MS').first(skipna=False)
     return ds.rename({'longitude': 'lon', 'latitude': 'lat',
                       'et': 'ET', 'swe': 'SWE'})
 
@@ -453,10 +477,7 @@ def load_daily_maurer_meteorology(resolution=DEFAULT_RESOLUTION, **kwargs):
         if 'latitude' in ds:
             # 1 or 2 files have different coordinate data so we fix that here
             ds = ds.rename({'latitude': 'lat', 'longitude': 'lon'})
-        for var in ['bounds_latitude', 'bounds_longitude',
-                    'longitude_bnds', 'latitude_bnds']:
-            if var in ds:
-                ds = ds.drop(var)
+            ds = ds.drop(['longitude_bnds', 'latitude_bnds'])
         ds['lon'] = ds['lon'].where(ds['lon'] <= 180, ds['lon'] - 360)
         return ds
 
@@ -466,7 +487,9 @@ def load_daily_maurer_meteorology(resolution=DEFAULT_RESOLUTION, **kwargs):
     ds = xr.open_mfdataset(fpath, preprocess=preproc, **kwargs)
 
     ds = ds.rename({'pr': 'pcp', 'tasmin': 't_min',
-                    'tasmax': 't_max', 'tas': 't_mean'})
+                    'tasmax': 't_max'})
+
+    ds['t_mean'] = _calc_t_mean(ds)
 
     return ds
 
