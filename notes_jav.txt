@@ -35,5 +35,6 @@ though expect isn't right.  maybe just a return?
 
 locations of interest:
 /glade/u/home/jhamman/projects/loca
+scratch:  /glade/scratch/jvano/temp
 loca/data_catalog.py is where paths to data and read in commands located
 

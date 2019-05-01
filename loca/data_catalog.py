@@ -18,14 +18,17 @@ BCSD_MET_MON_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/BCSD_mon_forc_nc'
 BCSD_VIC_MON_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/BCSD_mon_VIC_nc'
 
 # Maurer
-MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met_full/'
+MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met_test/' 
+# MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_w_MX_CA/' 
+# MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met_full/'  
+# MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met/' - used earlier, incomplete
 MAURER_VIC_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/historical_mon_VIC'
 
 # Livneh
 LIVNEH_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Livneh_met/livneh2014.1_16deg/'
 LIVNEH_VIC_ROOT_DIR = '/glade/p/ral/hap/common_data/LOCA/vic/Livneh_L14_CONUS/'
 
-DEFAULT_MON_HYDRO_VARS = ['ET', 'total_runoff']
+DEFAULT_MON_HYDRO_VARS = ['ET', 'total_runoff', 'SWE']
 DEFAULT_DAY_HYDRO_VARS = ['total_runoff']
 DEFAULT_RESOLUTION = '8th'
 
@@ -465,8 +468,12 @@ def load_daily_maurer_meteorology(resolution=DEFAULT_RESOLUTION, **kwargs):
     fpath = os.path.join(MAURER_MET_ROOT_DIR, var, '*nc')
     ds = xr.open_mfdataset(fpath, preprocess=preproc, **kwargs)
 
-    ds = ds.rename({'pr': 'pcp', 'tasmin': 't_min',
-                    'tasmax': 't_max', 'tas': 't_mean'})
+    ds = ds.rename({'Prcp': 'pcp', 'Tmin': 't_min',
+                    'Tmax': 't_max'})
+    ds['t_mean'] = (ds['t_min'] + ds['t_max'])/ 2
+# TODO added two lines above to read in MX and CA maurer - now won't work for others. make more universal with if statements 
+#     ds = ds.rename({'pr': 'pcp', 'Prcp': 'pcp', 'tasmin': 't_min',
+#                     'tasmax': 't_max', 'tas': 't_mean'})
 
     return ds
 
