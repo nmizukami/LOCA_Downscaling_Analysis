@@ -5,7 +5,7 @@ commands:
 du -sh
 ls -a --> displays all dot files
 git push origin (update my fork, not joes)
-
+(not sure why this isn't currently working)
 
 set up env:
 
