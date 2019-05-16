@@ -18,8 +18,8 @@ BCSD_MET_MON_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/BCSD_mon_forc_nc'
 BCSD_VIC_MON_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/BCSD_mon_VIC_nc'
 
 # Maurer
-MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met_test/' 
-# MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_w_MX_CA/' 
+# MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met_test/' 
+MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_w_MX_CA/' 
 # MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met_full/'  
 # MAURER_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Maurer_met/' - used earlier, incomplete
 MAURER_VIC_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/historical_mon_VIC'

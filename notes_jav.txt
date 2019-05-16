@@ -3,9 +3,10 @@ Generally, just reminders I used when setting everything up.  Includes basic com
 commands:
 
 du -sh
+ln -s <path> <shortcut>
 ls -a --> displays all dot files
 git push origin (update my fork, not joes)
-(not sure why this isn't currently working, it just hangs )
+(not sure why this isn't currently working, it just hang )
 
 set up env:
 
@@ -29,7 +30,9 @@ I entered:
 
 though expect isn't right.  maybe just a return?
 
-
+later on:
+conda install geopandas
+conda install regionmask -c conda-forge
 
 
 
