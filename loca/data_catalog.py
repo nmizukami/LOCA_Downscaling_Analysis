@@ -84,6 +84,21 @@ def resample_monthly_data(ds, freq='MS', chunks=None):
         out = out.persist().chunk(chunks)
     return out
 
+# # JAV adding interannual below 
+# # from Ethan:  ds["pcp"].resample(time="YS").sum(dim="time").std(dim="time")
+# def calc_interannual (ds, freq='MS', chunks=None):
+#     out = xr.Dataset()
+#     for name, da in ds.data_vars.items():
+#         if name in ['ET', 'runoff', 'total_runoff', 'baseflow', 'pcp']:
+#             out[name] = da.resample(time="YS").sum(dim="time").std(dim="time")
+#         else:
+#             # TODO: weight by days in month, or sum over year
+#             out[name] = da.resample(time="YS").mean(dim="time").std(dim="time")
+
+#     if chunks is not None:
+#         out = out.persist().chunk(chunks)
+#     return out
+
 
 # Wrappers
 def load_monthly_historical_hydro_datasets(models=None,
@@ -183,7 +198,7 @@ def load_daily_cmip_met_datasets(scen, models=None,
                                                **kwargs)
     data['bcsd'] = load_daily_bcsd_meteorology(scen=scen, models=models,
                                                resolution=resolution,
-                                               **kwargs)
+                                               **kwargs)  
     return data
 
 
