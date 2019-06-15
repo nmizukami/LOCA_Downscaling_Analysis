@@ -28,6 +28,8 @@ MAURER_VIC_ROOT_DIR = '/glade/p/ral/hap/common_data/BCSD/historical_mon_VIC'
 LIVNEH_MET_ROOT_DIR = '/glade/p/ral/hap/common_data/Livneh_met/livneh2014.1_16deg/'
 LIVNEH_VIC_ROOT_DIR = '/glade/p/ral/hap/common_data/LOCA/vic/Livneh_L14_CONUS/'
 
+
+
 DEFAULT_MON_HYDRO_VARS = ['ET', 'total_runoff', 'SWE']
 DEFAULT_DAY_HYDRO_VARS = ['total_runoff']
 DEFAULT_RESOLUTION = '8th'
@@ -132,11 +134,13 @@ def load_daily_historical_hydro_datasets(models=None,
     data = load_daily_cmip_hydro_datasets('historical', models=models,
                                           resolution=resolution,
                                           **kwargs)
+    print('load_daily_livneh_hydrology', flush=True)
     data['livneh'] = load_daily_livneh_hydrology(resolution=resolution,
                                                  **kwargs)
+    print('load_daily_maurer_hydrology', flush=True)
     data['maurer'] = load_daily_maurer_hydrology(resolution=resolution,
                                                  **kwargs)
-
+    
     # TODO: it would be better if we passed this info to the individual loaders
     for k, ds in data.items():
         data[k] = ds[variables]
