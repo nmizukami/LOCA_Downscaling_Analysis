@@ -292,10 +292,15 @@ def load_monthly_maurer_hydrology(resolution=DEFAULT_RESOLUTION, **kwargs):
     return ds.rename({'longitude': 'lon', 'latitude': 'lat',
                       'et': 'ET', 'swe': 'SWE', 'surface_runoff': 'runoff'})
 
-
 def load_daily_maurer_hydrology(**kwargs):
     print('load_daily_maurer_hydrology', flush=True)
-    raise NotImplementedError('netcdf files do not exist, ask @Naoki')
+#     raise NotImplementedError('netcdf files do not exist, ask @Naoki')
+#  commented above line out, and added below.  these files should be daily... need to understand this a little better
+    fpath = os.path.join(MAURER_VIC_ROOT_DIR, '*nc')
+    ds = xr.open_mfdataset(fpath, preprocess=drop_bound_varialbes, **kwargs)
+
+    return ds.rename({'longitude': 'lon', 'latitude': 'lat',
+                      'et': 'ET', 'swe': 'SWE', 'surface_runoff': 'runoff'})
 
 
 def load_daily_loca_meteorology(scen='historical', models=None,
