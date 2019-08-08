@@ -62,6 +62,7 @@ instance/
 .scrapy
 trash
 worker*
+slurm*
 
 # Sphinx documentation
 docs/_build/
