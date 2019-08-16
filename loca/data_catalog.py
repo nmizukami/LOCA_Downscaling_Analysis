@@ -125,6 +125,27 @@ def load_monthly_historical_hydro_datasets(models=None,
     return out
 
 
+# #  JULIE ATTEMPTED TO WRITE THIS.  STILL SAID data not defined.
+
+# def load_monthly_obs_hydro_datasets(variables=DEFAULT_MON_HYDRO_VARS,
+#                                            resolution=DEFAULT_RESOLUTION,
+#                                            **kwargs):
+#     print('load_monthly_obs_hydro_datasets', flush=True)
+#     data = {}
+
+#     data['livneh'] = load_daily_livneh_hydrologyeh_hydrology(resolution=resolution,
+#                                                    **kwargs)
+#     data['maurer'] = load_monthly_maurer_hydrology(resolution=resolution,
+#                                                    **kwargs)
+
+#     # TODO: it would be better if we passed this info to the individual loaders
+#     out = {}
+#     for k, ds in data.items():
+#         out[k] = ds[variables]
+#     return out
+
+
+
 def load_daily_historical_hydro_datasets(models=None,
                                          variables=DEFAULT_DAY_HYDRO_VARS,
                                          resolution=DEFAULT_RESOLUTION,

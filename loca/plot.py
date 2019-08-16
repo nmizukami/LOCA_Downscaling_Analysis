@@ -31,3 +31,9 @@ def make_plot(da, ax=None, plot_kwargs={}):
         facecolor='none')
     ax.add_feature(states_provinces, edgecolor='gray')
     return ax
+
+
+def add_ylabel(ax, text, fontsize=12):
+    return ax.text(-0.07, 0.55, text, va='center', ha='center',
+        rotation='vertical', rotation_mode='anchor',
+        transform=ax.transAxes, fontsize=fontsize)
