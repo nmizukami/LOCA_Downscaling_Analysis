@@ -86,22 +86,6 @@ def resample_monthly_data(ds, freq='MS', chunks=None):
         out = out.persist().chunk(chunks)
     return out
 
-# # JAV adding interannual below 
-# # from Ethan:  ds["pcp"].resample(time="YS").sum(dim="time").std(dim="time")
-# def calc_interannual (ds, freq='MS', chunks=None):
-#     out = xr.Dataset()
-#     for name, da in ds.data_vars.items():
-#         if name in ['ET', 'runoff', 'total_runoff', 'baseflow', 'pcp']:
-#             out[name] = da.resample(time="YS").sum(dim="time").std(dim="time")
-#         else:
-#             # TODO: weight by days in month, or sum over year
-#             out[name] = da.resample(time="YS").mean(dim="time").std(dim="time")
-
-#     if chunks is not None:
-#         out = out.persist().chunk(chunks)
-#     return out
-
-
 # Wrappers
 def load_monthly_historical_hydro_datasets(models=None,
                                            variables=DEFAULT_MON_HYDRO_VARS,
@@ -123,26 +107,6 @@ def load_monthly_historical_hydro_datasets(models=None,
     for k, ds in data.items():
         out[k] = ds[variables]
     return out
-
-
-# #  JULIE ATTEMPTED TO WRITE THIS.  STILL SAID data not defined.
-
-# def load_monthly_obs_hydro_datasets(variables=DEFAULT_MON_HYDRO_VARS,
-#                                            resolution=DEFAULT_RESOLUTION,
-#                                            **kwargs):
-#     print('load_monthly_obs_hydro_datasets', flush=True)
-#     data = {}
-
-#     data['livneh'] = load_daily_livneh_hydrologyeh_hydrology(resolution=resolution,
-#                                                    **kwargs)
-#     data['maurer'] = load_monthly_maurer_hydrology(resolution=resolution,
-#                                                    **kwargs)
-
-#     # TODO: it would be better if we passed this info to the individual loaders
-#     out = {}
-#     for k, ds in data.items():
-#         out[k] = ds[variables]
-#     return out
 
 
 
@@ -313,10 +277,9 @@ def load_monthly_maurer_hydrology(resolution=DEFAULT_RESOLUTION, **kwargs):
     return ds.rename({'longitude': 'lon', 'latitude': 'lat',
                       'et': 'ET', 'swe': 'SWE', 'surface_runoff': 'runoff'})
 
-def load_daily_maurer_hydrology(**kwargs):
+def load_daily_maurer_hydrology(resolution='8th', **kwargs):
     print('load_daily_maurer_hydrology', flush=True)
-#     raise NotImplementedError('netcdf files do not exist, ask @Naoki')
-#  commented above line out, and added below.  these files should be daily... need to understand this a little better
+    raise NotImplementedError('netcdf files do not exist, ask @Naoki')
     fpath = os.path.join(MAURER_VIC_ROOT_DIR, '*nc')
     ds = xr.open_mfdataset(fpath, preprocess=drop_bound_varialbes, **kwargs)
 
